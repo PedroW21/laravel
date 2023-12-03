@@ -9,5 +9,10 @@ class Support extends Model
 {
     use HasFactory; // the finality of this is to use in tests with factory
 
-    
+    // $fillable defines what fields can be filled in the database, it's a security measure
+    protected $fillable = [
+        'subject',
+        'body',
+        'status'
+    ];
 }

@@ -24,8 +24,13 @@ class SupportController extends Controller
         return Inertia::render('Admin/Supports/Create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Support $support)
     {
-        dd($request->all());
+        $data = $request->all();
+        $data['status'] = 'active';
+
+        $support->create($data);
+
+        return redirect()->route('supports.index');
     }
 }
