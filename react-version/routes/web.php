@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\{SupportController};
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,14 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+/* COURSE CODE BELOW */
+
+// name is used to not hardcode the route in the view
+Route::get('/supports', [SupportController::class, 'index'])->name('supports.index');
+
+
+/* END OF COURSE CODE */
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
