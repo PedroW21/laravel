@@ -1,8 +1,10 @@
 import { router } from "@inertiajs/react";
-import { route } from "ziggy-js";
+import { useRoute } from "ziggy-js";
 
 const Create = () => {
 
+    const route = useRoute();
+    
     const handleNewSupportCreate = (e) => {
         e.preventDefault();
         
