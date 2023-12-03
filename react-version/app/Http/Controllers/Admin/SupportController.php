@@ -18,4 +18,14 @@ class SupportController extends Controller
 
         return Inertia::render('Admin/Supports/Supports', compact('supports'));
     }
+
+    public function create() 
+    {
+        return Inertia::render('Admin/Supports/Create');
+    }
+
+    public function store(Request $request)
+    {
+        dd($request->all());
+    }
 }

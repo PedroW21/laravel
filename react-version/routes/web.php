@@ -20,8 +20,9 @@ use Inertia\Inertia;
 /* COURSE CODE BELOW */
 
 // name is used to not hardcode the route in the view
+Route::post('supports', [SupportController::class, 'store'])->name('supports.store');
 Route::get('/supports', [SupportController::class, 'index'])->name('supports.index');
-
+Route::get('/supports/create', [SupportController::class, 'create'])->name('supports.create');
 
 /* END OF COURSE CODE */
 
@@ -44,4 +45,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

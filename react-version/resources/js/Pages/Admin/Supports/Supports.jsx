@@ -1,11 +1,15 @@
 import { usePage } from "@inertiajs/react";
-import React from "react";
+import { useRoute } from 'ziggy-js';
 
 const Supports = () => {
     const { supports } = usePage().props;
 
     return (
         <section>
+            <h1>Listagem dos Suports</h1>
+
+            <a href={route('supports.create')}>Criar dúvida</a>
+
             <table>
                 <thead>
                     <tr>
