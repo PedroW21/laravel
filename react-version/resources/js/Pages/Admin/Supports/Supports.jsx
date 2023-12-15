@@ -1,14 +1,21 @@
 import { usePage } from "@inertiajs/react";
-import { useRoute } from 'ziggy-js';
+import { useRoute } from "ziggy-js";
 
 const Supports = () => {
     const { supports } = usePage().props;
+    const route = useRoute();
+
+    // const handleSupportEdit = (id) => {
+
+    //     router.get(route("supports.show"), { id })
+
+    // }
 
     return (
         <section>
             <h1>Listagem dos Suports</h1>
 
-            <a href={route('supports.create')}>Criar dúvida</a>
+            <a href={route("supports.create")}>Criar dúvida</a>
 
             <table>
                 <thead>
@@ -25,8 +32,13 @@ const Supports = () => {
                             <td>{support.subject}</td>
                             <td>{support.status}</td>
                             <td>{support.body}</td>
-                            <td>
-                                <button>editar</button>
+                            <td className="flex gap-2 items-center justify-center ">
+                                <a href={route("supports.show", support.id)}>
+                                    ver
+                                </a>
+                                <a href={route("supports.edit", support.id)}>
+                                    editar
+                                </a>
                                 <button>excluir</button>
                             </td>
                         </tr>
