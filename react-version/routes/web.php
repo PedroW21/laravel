@@ -20,6 +20,7 @@ use Inertia\Inertia;
 /* COURSE CODE BELOW */
 
 // name is used to not hardcode the route in the view
+Route::delete('/supports/{id}', [SupportController::class, 'destroy'])->name('supports.destroy');
 Route::get('/supports', [SupportController::class, 'index'])->name('supports.index');
 Route::post('/supports', [SupportController::class, 'store'])->name('supports.store');
 Route::get('/supports/create', [SupportController::class, 'create'])->name('supports.create');
