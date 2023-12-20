@@ -3,7 +3,7 @@ import React from "react";
 import { useRoute } from "ziggy-js";
 
 const Edit = () => {
-    const { support } = usePage().props;
+    const { support, errors } = usePage().props;
     const { id, subject, body } = support;
     const route = useRoute();
 
@@ -20,6 +20,16 @@ const Edit = () => {
     return (
         <section>
             <h1> Dúvida: {id} </h1>
+
+            {errors &&
+                Object.values(errors).map((error) => {
+                    return (
+                        <p key={error} style={{ color: "red" }}>
+                            {error}
+                        </p>
+                    );
+                })}
+
             <form onSubmit={handleNewSupportEdit}>
                 <label htmlFor="subject">Assunto:</label>
                 <input

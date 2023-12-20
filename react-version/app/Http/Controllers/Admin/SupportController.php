@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUpdateSupport;
 use App\Models\Support;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -39,9 +40,9 @@ class SupportController extends Controller
     }
     // support não é recebimento de algo, mas sim a disponibilização de algo
     // support aqui é relacionado a instancia atual da chamada
-    public function store(Request $request, Support $support)
+    public function store(StoreUpdateSupport $request, Support $support)
     {
-        $data = $request->all();
+        $data = $request->validated();
         $data['status'] = 'active';
 
         $support->create($data); // injetei a dependencia de Support no metodo index, agora posso usar o metodo create
@@ -58,7 +59,7 @@ class SupportController extends Controller
         return Inertia::render('Admin/Supports/Edit', compact('support'));
     }
 
-    public function update(Request $request, Support $support, string|int $id)
+    public function update(StoreUpdateSupport $request, Support $support, string|int $id)
     {
         // dd($id); pass
         // dd($request);
@@ -73,9 +74,13 @@ class SupportController extends Controller
         // mas como quero alterar apenas alguns, uso o metodo only
         // poderia fazer da seguinte forma também:
         # $support->body = $request->body; // o bagulhete no banco é igual ao que veio na request        
-        $support->update($request->only([
-            'subject', 'body'
-        ]));
+        // $support->update($request->only([
+        //     'subject', 'body'
+        // ]));
+
+        # just another way to do the line 77
+        $support->update($request->validated());
+
 
         return redirect()->route('supports.index');
     }
