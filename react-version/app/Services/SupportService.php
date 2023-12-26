@@ -16,6 +16,12 @@ class SupportService
     ) {
     }
 
+
+    public function paginate(int $page = 1, int $itemsPerPage = 15, string $filter = null)
+    {
+        return $this->repository->paginate($page, $itemsPerPage, $filter);
+    }
+
     public function getAll(string $filter = null): array
     {
         return $this->repository->getAll($filter);

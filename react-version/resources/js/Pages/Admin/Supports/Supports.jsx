@@ -39,7 +39,6 @@ const Supports = () => {
                                 <a href={route("supports.edit", support.id)}>
                                     editar
                                 </a>
-                                <button>excluir</button>
                             </td>
                         </tr>
                     ))}

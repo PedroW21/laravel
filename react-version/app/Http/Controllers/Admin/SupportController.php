@@ -23,7 +23,12 @@ class SupportController extends Controller
 
         //$support = new Support(); # not elegant
         // $supports = $support::all(); we will use the service instead
-        $supports = $this->service->getAll($request->filter);
+        // $supports = $this->service->getAll($request->filter);
+        $supports = $this->service->paginate(
+            page: $request->get('page', 1),
+            itemsPerPage: $request->get('itemsPerPage', 15),
+            filter: $request->filter
+        );
 
         // dd($supports); // var_dump and die
 
@@ -98,7 +103,7 @@ class SupportController extends Controller
         // $support->update($request->validated());
         $support = $this->service->update(UpdateSupportDTO::makeFromRequest($request));
         if (!$support) return back();
-            
+
         return redirect()->route('supports.index');
     }
 
