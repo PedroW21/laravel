@@ -46,5 +46,7 @@ class StoreUpdateSupport extends FormRequest
 
             return $rules;
         }
+
+        return $rules;
     }
 }
