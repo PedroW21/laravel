@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DTO\CreateSupportDTO;
+use App\DTO\UpdateSupportDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateSupport;
 use App\Models\Support;
@@ -51,10 +53,14 @@ class SupportController extends Controller
     // support aqui é relacionado a instancia atual da chamada
     public function store(StoreUpdateSupport $request, Support $support)
     {
-        $data = $request->validated();
-        $data['status'] = 'active';
+        // $data = $request->validated();
+        // $data['status'] = 'active';
 
-        $support->create($data); // injetei a dependencia de Support no metodo index, agora posso usar o metodo create
+        // $support->create($data); // injetei a dependencia de Support no metodo index, agora posso usar o metodo create
+
+        // $this->service->new(new CreateSupportDTO(...args)); # poderia fazer assim, mas fica repetitivo
+
+        $this->service->new(CreateSupportDTO::makeFromRequest($request));
 
         return redirect()->route('supports.index');
     }
@@ -69,13 +75,13 @@ class SupportController extends Controller
         return Inertia::render('Admin/Supports/Edit', compact('support'));
     }
 
-    public function update(StoreUpdateSupport $request, Support $support, string|int $id)
+    public function update(StoreUpdateSupport $request)
     {
         // dd($id); pass
         // dd($request);
 
-        $support = $support->find($id);
-        if (!$support) return back();
+        // $support = $support->find($id);
+        // if (!$support) return back();
 
         // dd($request->only([ // only = apenas
         //     'subject', 'body'
@@ -89,9 +95,10 @@ class SupportController extends Controller
         // ]));
 
         # just another way to do the line 77
-        $support->update($request->validated());
-
-
+        // $support->update($request->validated());
+        $support = $this->service->update(UpdateSupportDTO::makeFromRequest($request));
+        if (!$support) return back();
+            
         return redirect()->route('supports.index');
     }
 

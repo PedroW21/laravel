@@ -2,14 +2,18 @@
 
 namespace App\Services;
 
+use App\DTO\CreateSupportDTO;
+use App\DTO\UpdateSupportDTO;
+use App\Repositories\SupportRepositoryInterface;
 use stdClass;
 
 class SupportService
 {
-    protected $repository;
-
-    public function __construct()
-    {
+    # inversão de dependencia, onde não interessa a implementação, mas sim a interface
+    # não dependemos do tipo de retorno de x,y,z, pois definimos na interface oq deve ser retornado
+    public function __construct(
+        protected SupportRepositoryInterface $repository // injeta a dependencia de SupportRepositoryInterface 
+    ) {
     }
 
     public function getAll(string $filter = null): array
@@ -31,21 +35,14 @@ class SupportService
         em vez de ter que lidar com n parametros aqui, injeta-se um DTO
 
     */
-    public function new(
-        string $subject,
-        string $status,
-        string $body
-    ): stdClass {
-        return $this->repository->new($subject, $status, $body);
+    public function new(CreateSupportDTO $dto): stdClass
+    {
+        return $this->repository->new($dto);
     }
 
-    public function update(
-        string $id,
-        string $subject,
-        string $status,
-        string $body
-    ): stdClass | null {
-        return $this->repository->update($id, $subject, $status, $body);
+    public function update(UpdateSupportDTO $dto): stdClass | null
+    {
+        return $this->repository->update($dto);
     }
 
     public function delete(string $id): void
