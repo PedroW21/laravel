@@ -5,28 +5,37 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateSupport;
 use App\Models\Support;
+use App\Services\SupportService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class SupportController extends Controller
 {
-    public function index(Support $support) // elegant way, using dependency injection. Create a new instance of Support model and pass it to the index method
+
+    public function __construct(protected SupportService $service)
+    {
+    }
+
+    public function index(Request $request) // elegant way, using dependency injection. Create a new instance of Support model and pass it to the index method
     {
 
         //$support = new Support(); # not elegant
-        $supports = $support::all();
+        // $supports = $support::all(); we will use the service instead
+        $supports = $this->service->getAll($request->filter);
+
         // dd($supports); // var_dump and die
 
         // compact = ['supports' => $supports]
         return Inertia::render('Admin/Supports/Supports', compact('supports'));
     }
 
-    public function show(string|int $id)
+    public function show(string $id)
     {
         // dump($id);
 
         // posso usar where
-        $support = Support::find($id); //chamo o a classe para executar um metodo seu
+        // $support = Support::find($id); //chamo o a classe para executar um metodo seu
+        $support = $this->service->findOne($id);
         if (!$support) {
             return redirect()->back(); // pega a ultima url que acessou e redireciona para ela
         }
@@ -50,10 +59,11 @@ class SupportController extends Controller
         return redirect()->route('supports.index');
     }
 
-    public function edit(string|int $id, Support $support)
+    public function edit(string $id)
     {
         // dump($id);
-        $support = $support->where('id', '=', $id)->first(); // poderia deixar sem o parametro de '='
+        // $support = $support->where('id', '=', $id)->first(); // poderia deixar sem o parametro de '='
+        $support = $this->service->findOne($id);
         if (!$support) return back();
 
         return Inertia::render('Admin/Supports/Edit', compact('support'));
@@ -85,12 +95,12 @@ class SupportController extends Controller
         return redirect()->route('supports.index');
     }
 
-    public function destroy(string|int $id, Support $support)
+    public function destroy(string $id)
     {
-        $support = $support->find($id);
-        if (!$support) return back();
 
-        $support->delete();
+        // $support = $support->find($id);
+
+        $this->service->delete($id);
 
         return redirect()->route('supports.index');
     }
